@@ -32,6 +32,31 @@
   from { transform: rotate(-12deg); }
   to { transform: rotate(12deg); }
 }
+  /* Equalizer top bar */
+.eq-bar-row {
+  display: flex;
+  gap: 4px;
+  height: 18px;
+  margin-bottom: 10px;
+}
+
+.eq-bar {
+  flex: 1;
+  border-radius: 999px;
+  background: linear-gradient(to top, rgba(212,175,55,0.9), rgba(247,226,122,0.4));
+  transform-origin: bottom;
+  animation: eq-pulse 1.2s ease-in-out infinite;
+}
+
+.eq-bar:nth-child(2n) { animation-delay: 0.2s; }
+.eq-bar:nth-child(3n) { animation-delay: 0.4s; }
+
+@keyframes eq-pulse {
+  0% { transform: scaleY(0.3); opacity: 0.6; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0.4); opacity: 0.7; }
+}
+
 <body>
 
 <div class="bg-lights">
