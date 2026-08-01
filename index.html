@@ -381,9 +381,25 @@ button:disabled {
 
   <div class="deck-header">
     <div>
-      <div class="title title-glow">brit awards</div>
+      <div class="title title-glow"></div>
     </div>
   </div>
+   <!-- Image that triggers audio -->
+   <img src="https://th.bing.com/th/id/R.bc4c9da2a02b90e7c97890a830baacb0?rik=NpG%2bZOHPc3lU%2fA&riu=http%3a%2f%2fcdn.shopify.com%2fs%2ffiles%2f1%2f0256%2f8808%2f0480%2fproducts%2fNuWave-disk2x2-Brick-lightblue.jpg%3fv%3d1661533726&ehk=0B8Bp6OEhdBfCb39W32U9tRPEGxC74hXXI6Uuwz0sPs%3d&risl=&pid=ImgRaw&r=0&adlt=strict" alt="Music Image" style="width:300px; cursor:pointer;" onclick="playMusic()">
+   <!-- Audio element -->
+   <audio id="musicPlayer">
+       <source src="pompeii.mp3" type="audio/mpeg">
+       Your browser does not support the audio element
+   </audio>
+   <script>
+       // Function to play music
+       function playMusic() {
+           const audio = document.getElementById('musicPlayer');
+           audio.play();
+       }
+   </script>
+</body>
+</html>
 
 </body>
 </html>
