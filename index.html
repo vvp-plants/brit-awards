@@ -301,6 +301,22 @@ button:disabled {
   transition: width 0.25s ease-out;
 }
 
+  .laser {
+  position: fixed;
+  width: 2px;
+  height: 200px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  opacity: 0.8;
+  z-index: 9997;
+  pointer-events: none;
+  animation: laser-shoot 0.6s ease-out forwards;
+}
+
+@keyframes laser-shoot {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-20vh) rotate(20deg); opacity: 0; }
+}
+
 /* Music note particles */
 .note {
   position: fixed;
@@ -384,20 +400,44 @@ button:disabled {
       <div class="title title-glow"></div>
     </div>
   </div>
-   <!-- Image that triggers audio -->
-   <img src="https://th.bing.com/th/id/R.bc4c9da2a02b90e7c97890a830baacb0?rik=NpG%2bZOHPc3lU%2fA&riu=http%3a%2f%2fcdn.shopify.com%2fs%2ffiles%2f1%2f0256%2f8808%2f0480%2fproducts%2fNuWave-disk2x2-Brick-lightblue.jpg%3fv%3d1661533726&ehk=0B8Bp6OEhdBfCb39W32U9tRPEGxC74hXXI6Uuwz0sPs%3d&risl=&pid=ImgRaw&r=0&adlt=strict" alt="Music Image" style="width:50px; cursor:pointer;" onclick="playMusic()">
-   <!-- Audio element -->
-   <audio id="musicPlayer">
-       <source src="pompeii.mp3" type="audio/mpeg">
-       Your browser does not support the audio element
-   </audio>
-   <script>
-       // Function to play music
-       function playMusic() {
-           const audio = document.getElementById('musicPlayer');
-           audio.play();
-       }
-   </script>
+<!-- Image that triggers audio -->
+<img src="https://th.bing.com/th/id/R.bc4c9da2a02b90e7c97890a830baacb0?rik=NpG%2bZOHPc3lU%2fA&riu=http%3a%2f%2fcdn.shopify.com%2fs%2ffiles%2f1%2f0256%2f8808%2f0480%2fproducts%2fNuWave-disk2x2-Brick-lightblue.jpg%3fv%3d1661533726&ehk=0B8Bp6OEhdBfCb39W32U9tRPEGxC74hXXI6Uuwz0sPs%3d&risl=&pid=ImgRaw&r=0&adlt=strict"
+     alt="Music Image"
+     style="width:50px; cursor:pointer;"
+     onclick="playMusic()">
+
+<!-- Stop button -->
+<button onclick="stopMusic()" style="margin-left:10px;">Stop Music</button>
+
+<!-- Audio element -->
+<audio id="musicPlayer">
+    <source src="pompeii.mp3" type="audio/mpeg">
+    Your browser does not support the audio element
+</audio>
+
+<script>
+function playMusic() {
+    const audio = document.getElementById('musicPlayer');
+    audio.play();
+}
+
+function stopMusic() {
+    const audio = document.getElementById('musicPlayer');
+    audio.pause();
+    audio.currentTime = 0;
+}
+  function launchLasers() {
+  for (let i = 0; i < 6; i++) {
+    const laser = document.createElement("div");
+    laser.classList.add("laser");
+    laser.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(laser);
+    setTimeout(() => laser.remove(), 700);
+  }
+}
+
+</script>
+
 </body>
 </html>
 
