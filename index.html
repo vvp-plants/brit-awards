@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Music Presentation – Full Show</title>
+
+<style>
+:root {
+  --bg: #041b11;
+  --bg-alt: #062319;
+  --accent: #d4af37;
+  --accent-soft: #f7e27a;
+  --text: #f5f5f5;
+  --muted: #a3b3a8;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0b3b26 0, var(--bg) 45%, #020806 100%);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Background effects */
+.bg-lights {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.light-beam {
+  position: absolute;
+  width: 220px;
+  height: 600px;
+  background: radial-gradient(circle at top, rgba(212,175,55,0.7), transparent 70%);
+  filter: blur(6px);
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  animation: beam-sway 8s ease-in-out infinite alternate;
+}
+
+.light-beam:nth-child(1) { left: 10%; top: -80px; animation-delay: 0s; }
+.light-beam:nth-child(2) { left: 50%; top: -100px; animation-delay: 2s; }
+.light-beam:nth-child(3) { left: 80%; top: -60px; animation-delay: 4s; }
+
+@keyframes beam-sway {
+  from { transform: rotate(-12deg); }
+  to { transform: rotate(12deg); }
+}
+
+/* Crowd silhouette */
+.crowd {
+  position: fixed;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.crowd::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 80%, rgba(0,0,0,0.9) 0, transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(0,0,0,0.9) 0, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(0,0,0,0.9) 0, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(0,0,0,0.9) 0, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0,0,0,0.9) 0, transparent 40%);
+  opacity: 0.9;
+}
+
+/* Deck */
+.deck {
+  position: relative;
+  z-index: 2;
+  width: 90vw;
+  max-width: 1100px;
+  height: 80vh;
+  max-height: 650px;
+  background: linear-gradient(135deg, rgba(6,35,25,0.95), rgba(4,27,17,0.98));
+  border-radius: 24px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(212,175,55,0.25);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+/* Equalizer top bar */
+.eq-bar-row {
+  display: flex;
+  gap: 4px;
+  height: 18px;
+  margin-bottom: 10px;
+}
+
+.eq-bar {
+  flex: 1;
+  border-radius: 999px;
+  background: linear-gradient(to top, rgba(212,175,55,0.9), rgba(247,226,122,0.4));
+  transform-origin: bottom;
+  animation: eq-pulse 1.2s ease-in-out infinite;
+}
+
+.eq-bar:nth-child(2n) { animation-delay: 0.2s; }
+.eq-bar:nth-child(3n) { animation-delay: 0.4s; }
+
+@keyframes eq-pulse {
+  0% { transform: scaleY(0.3); opacity: 0.6; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0.4); opacity: 0.7; }
+}
+
+/* Header */
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 1.4rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title-glow {
+  text-shadow:
+    0 0 8px rgba(212,175,55,0.8),
+    0 0 18px rgba(247,226,122,0.6);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Slides */
+.slide {
+  flex: 1;
+  display: none;
+  padding: 10px 4px 0;
+  position: relative;
+}
+
+.slide.active {
+  display: block;
+  animation: slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-in {
+  0% { opacity: 0; transform: translateY(18px) scale(0.98); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+.slide h1, .slide h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(212,175,55,0.6);
+}
+
+.slide h1 {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+
+.slide h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.slide p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 720px;
+}
+
+/* Spotlight effect */
+.spotlight {
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle at 50% 0%, rgba(247,226,122,0.12), transparent 60%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Bullet list */
+.bullet-list {
+  margin-top: 10px;
+  list-style: none;
+}
+
+.bullet-list li {
+  margin: 6px 0;
+  position: relative;
+  padding-left: 22px;
+  color: var(--muted);
+}
+
+.bullet-list li::before {
+  content: "♪";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 0.9rem;
+  color: var(--accent-soft);
+}
+
+/* Tags */
+.tag-row {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: rgba(4, 27, 17, 0.7);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button {
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.7);
+  background: rgba(6, 35, 25, 0.9);
+  color: var(--accent);
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  background: rgba(10, 50, 32, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Progress bar */
+.progress {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  transition: width 0.25s ease-out;
+}
+
+/* Music note particles */
+.note {
+  position: fixed;
+  font-size: 1.1rem;
+  color: var(--accent-soft);
+  opacity: 0.9;
+  z-index: 9998;
+  pointer-events: none;
+  animation: note-float 2.4s ease-out forwards;
+}
+
+@keyframes note-float {
+  0% { transform: translateY(0) translateX(0) scale(0.9); opacity: 1; }
+  100% { transform: translateY(-160px) translateX(40px) scale(1.2); opacity: 0; }
+}
+
+/* Confetti + pyro */
+.confetti-piece {
+  position: fixed;
+  width: 8px;
+  height: 14px;
+  background: gold;
+  opacity: 0.9;
+  z-index: 9999;
+  animation: confetti-fall 1.4s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+}
+
+.pyro-spark {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: #d4af37;
+  border-radius: 50%;
+  z-index: 9999;
+  animation: spark-rise 0.9s ease-out forwards;
+}
+
+@keyframes spark-rise {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-180px) scale(0.2); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .deck {
+    height: 88vh;
+    padding: 20px;
+  }
+  .slide h1 {
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-lights">
+  <div class="light-beam"></div>
+  <div class="light-beam"></div>
+  <div class="light-beam"></div>
+</div>
+<div class="crowd"></div>
+
+<div class="deck">
+  <div class="eq-bar-row">
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+  </div>
+
+  <div class="deck-header">
+    <div>
+      <div class="title title-glow">brit awards</div>
+    </div>
+  </div>
+
+</body>
+</html>
